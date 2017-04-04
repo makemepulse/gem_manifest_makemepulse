@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'manifest_makemepulse/version'
+require 'manifest/rails/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "manifest_makemepulse"
-  spec.version       = ManifestMakemepulse::VERSION
+  spec.version       = ManifestMakemepulse::Rails::VERSION
   spec.authors       = ["Antoine Ughetto"]
   spec.email         = ["antoine@makemepulse.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = "Generate Manifest file to work with WK workflow"
+  spec.description   = "Generate Manifest file to work with WK workflow"
+  spec.homepage      = "http://www.makemepulse.com"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
