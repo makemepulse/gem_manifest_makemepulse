@@ -10,9 +10,8 @@ module ManifestMakemepulse::Rails
     initializer :setup_manifest, group: :all do |app|
 
 
-      config.manifest.input_location  = File.join(Rails.root, "app/assets/")
       config.manifest.output_location = File.join(Rails.root, "app/assets/javascripts/")
-      config.manifest.output_file     = "tmp-assets-manifest.js.erb"
+      config.manifest.output_file     = "assets-manifest.js.erb"
 
       if Rails.env.development?
 

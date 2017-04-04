@@ -20,10 +20,6 @@ module ManifestMakemepulse::Rails
         manifest_config = ::Rails.application.config.manifest
         manifest_file   = File.join(manifest_config.output_location , manifest_config.output_file) 
 
-        #directory_glob = Dir.glob(File.join(manifest_config.input_location, "**/*"))
-        #  .select{|f| File.file?(f)}
-        #  .map{|path| path.gsub(manifest_config.input_location, "")}
-
         directory_glob = ::Rails.application.assets.each_file
           .select{|f| File.file?(f) && !manifest_config.exclude.include?(File.extname(f))}
           .map{|path| 

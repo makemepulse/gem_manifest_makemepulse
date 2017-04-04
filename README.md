@@ -1,8 +1,6 @@
 # ManifestMakemepulse
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/manifest_makemepulse`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This GEM generate your manifest JS file to be used with WK workflow in a Rails application.
 
 ## Installation
 
@@ -22,7 +20,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+By default, `.js`, `.erb`, `.css`, `.map`, `.erb` are excluded.
+The GEM will generate a `assets-manifest.js.erb` file in your `app/assets/javascripts/` folder
+
+You can add some configuration in your Rails application.
+
+
+```RUBY
+  config.manifest.exclude << [".ext", ".ext", ".ext"]
+  config.manifest.output_location = "your location"
+  config.manifest.output_file = "your filename"
+```
 
 ## Development
 
