@@ -14,31 +14,32 @@ module ManifestMakemepulse::Rails
         @app.call(env)
       else
         start = Time.now
-        puts "generate JS manifest"
-        manifest_config = ::Rails.application.config.manifest
-        
-        manifest_file   = File.join(manifest_config.output_location , manifest_config.output_file) 
-        assets_folder   = File.join(::Rails.root, "assets", "images")
 
-        directory_glob = Dir.glob(File.join(manifest_config.input_location, "**/*"))
-          .map{|path| path.gsub(manifest_config.input_location, "")}
-          .map{|path| path.split '/' }
-          .inject({}){|acc, path| path.inject(acc) do |acc2,dir| 
-            
-            if File.extname(dir).empty?
-              acc2[dir] ||= {}
-            else
-              acc2[dir] ||= {
-                asset_path: "<%= asset_path('#{path.join("/")}') %>",
-                asset_url: "<%= asset_url('#{path.join("/")}') %>"
-              } 
+        puts ::Rails.application.assets.each_file
+
+        manifest_config = ::Rails.application.config.manifest
+        manifest_file   = File.join(manifest_config.output_location , manifest_config.output_file) 
+
+        directory_glob = ::Rails.application.assets.each_file
+          .select{|f| File.file?(f) && !manifest_config.exclude.include?(File.extname(f))}
+          .map{|path| 
+            ::Rails.application.assets.paths.each do |a_p|
+              path.gsub!("#{a_p}/", "")
             end
-            acc2[dir]
-          end
-          acc  }
+            path
+          }
+
+        directory_stru = {}
+        for el in directory_glob
+          directory_stru[el] = {
+                asset_path: "<%= asset_path('#{el}') %>",
+                asset_url: "<%= asset_url('#{el}') %>"
+              } 
+        end
+
 
         File.open(manifest_file, 'w') do |file|
-          file.puts "'use strict';\nwindow.manifest = #{JSON::dump(directory_glob)}"
+          file.puts "'use strict';\nwindow.manifest = #{JSON::dump(directory_stru)}"
         end
         finish = Time.now
         diff = finish - start
