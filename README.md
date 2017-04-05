@@ -27,7 +27,9 @@ You can add some configuration in your Rails application.
 
 
 ```RUBY
-  config.manifest.exclude << [".ext", ".ext", ".ext"]
+  config.manifest.exclude << ".ext"
+  config.manifest.exclude << "folderName/"
+  config.manifest.exclude << "filename.ext"
   config.manifest.output_location = "your location"
   config.manifest.output_file = "your filename"
 ```
