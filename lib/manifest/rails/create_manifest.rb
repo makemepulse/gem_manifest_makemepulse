@@ -16,14 +16,15 @@ module ManifestMakemepulse::Rails
         start = Time.now
 
         manifest_config = ::Rails.application.config.manifest
-        manifest_file   = File.join(manifest_config.output_location , manifest_config.output_file) 
-        
+        manifest_file   = File.join(manifest_config.output_location , manifest_config.output_file)
+
         puts manifest_config.exclude
 
         directory_glob = ::Rails.application.assets.each_file
           .select{ |f| File.file?(f) && !manifest_config.exclude.include?(File.extname(f))}
           .select{ |f| File.file?(f) && !manifest_config.exclude.include?(File.basename(f))}
-          .map{|path| 
+          .select{ |f| File.file?(f) && !manifest_config.exclude.include?(File.dirname(f).gsub!("#{Rails.root}/", "")) }
+          .map{|path|
             ::Rails.application.assets.paths.each do |a_p|
               path.gsub!("#{a_p}/", "")
             end
@@ -37,7 +38,7 @@ module ManifestMakemepulse::Rails
             directory_stru[el] = {
                   asset_path: "<%= asset_path('#{el}') %>",
                   asset_url: "<%= asset_url('#{el}') %>"
-                } 
+                }
           end
         end
 
@@ -54,7 +55,7 @@ module ManifestMakemepulse::Rails
 
     def find_in_exclude(exclude, element)
       item_find = false
-      exclude.each do |ex| 
+      exclude.each do |ex|
         if element.index(ex) == 0
           item_find = true
           break
